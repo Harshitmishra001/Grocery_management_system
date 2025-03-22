@@ -1,0 +1,19 @@
+{
+    "name": "grocery_management_system",
+    "version": "1.0.0",
+    "description": "A grocery management system",
+    "main": "server.js",
+    "scripts": {
+        "start": "node server.js"
+    },
+    "dependencies": {
+        "cors": "^2.8.5",
+        "dotenv": "^16.4.7",
+        "express": "^4.21.2",
+        "grocery_management_system": "file:",
+        "mongoose": "^8.12.2",
+        "morgan": "^1.10.0"
+    },
+    "author": "",
+    "license": "ISC"
+}
