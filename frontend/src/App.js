@@ -1,26 +1,46 @@
 // src/App.js
-import React, { useState } from 'react';
-import Login from './components/Login';
-import Dashboard from './components/Dashboard';
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import Login from './components/Auth/Login';
+import Register from './components/Auth/Register';
+import Dashboard from './components/Dashboard/Dashboard';
+import OrderList from './components/Orders/OrderList';
+import Navbar from './components/Layout/Navbar';
+import { AuthProvider } from './context/AuthContext';
+import PrivateRoute from './components/Auth/PrivateRoute';
 
 function App() {
-  const [user, setUser] = useState(null);
-
-  // A simple handler after successful login
-  const handleLogin = (userData) => {
-    setUser(userData);
-  };
-
-  // Render the Login component if no user, otherwise show Dashboard
   return (
-    <div>
-      <h1>Welcome to SmartNest</h1>
-      {user ? (
-        <Dashboard user={user} />
-      ) : (
-        <Login onLogin={handleLogin} />
-      )}
-    </div>
+    <AuthProvider>
+      <Router>
+        <div className="app">
+          <Navbar />
+          <div className="container">
+            <Routes>
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route
+                path="/dashboard"
+                element={
+                  <PrivateRoute>
+                    <Dashboard />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/orders"
+                element={
+                  <PrivateRoute>
+                    <OrderList />
+                  </PrivateRoute>
+                }
+              />
+              <Route path="/" element={<Navigate to="/dashboard" replace />} />
+            </Routes>
+          </div>
+        </div>
+      </Router>
+    </AuthProvider>
   );
 }
 
