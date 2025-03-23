@@ -1,123 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SmartNest</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <style>
-      /* Ensuring no horizontal scroll */
-      body {
-        overflow-x: hidden;
-      }
-    </style>
-  </head>
-  <body class="bg-gray-100 overflow-x-hidden">
-    <div class="main bg-red-400 min-h-screen">
-      <!-- Navbar -->
-      <div class="nav flex justify-between items-center p-6 container mx-auto">
-        <div class="bg-gradient-to-r from-pink-500 to-red-500 text-white font-bold text-3xl px-6 py-3 rounded-xl shadow-lg tracking-wider transition-transform duration-300 hover:scale-105">
-          SmartNest
-        </div>
-        <div>
-          <button class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Login</button>
-          <button class="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg ml-2 hover:bg-gray-300">Sign Up</button>
-        </div>
-      </div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | SmartNest</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="flex items-center justify-center h-screen bg-gray-100">
+    
+    <div class="bg-white p-8 rounded-lg shadow-lg w-96">
+        <h2 class="text-2xl font-bold text-gray-700 text-center">Welcome to SmartNest</h2>
+        <p class="text-gray-500 text-center mb-6">Login to your account</p>
 
-      <!-- Hero Section -->
-      <div class="text-center mt-10 container mx-auto">
-        <h1 class="text-4xl font-bold text-white">Hey! What would you like to do today?</h1>
-        <p class="text-gray-200 mt-2 text-lg">Manage groceries, get meal suggestions, and organize chores efficiently.</p>
-      </div>
+        <form id="loginForm">
+            <div class="mb-4">
+                <label class="block text-gray-600 text-sm font-semibold mb-2" for="email">Email</label>
+                <input type="email" id="email" class="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-red-300 outline-none" placeholder="Enter your email" required>
+            </div>
 
-      <!-- Main Features Section -->
-      <!-- Main Features Section -->
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 p-10 container mx-auto">
-  
-  <!-- Grocery Tracking -->
-  <a href="gt.html" class="bg-white p-6 rounded-xl shadow-lg transition-transform transform hover:scale-105 cursor-pointer hover:shadow-xl">
-    <div class="flex items-center justify-center bg-red-500 text-white w-16 h-16 rounded-full mb-4">
-      🔍
+            <div class="mb-4">
+                <label class="block text-gray-600 text-sm font-semibold mb-2" for="password">Password</label>
+                <input type="password" id="password" class="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-red-300 outline-none" placeholder="Enter your password" required>
+            </div>
+
+            <p id="error-message" class="text-red-500 text-sm text-center hidden">Invalid email or password!</p>
+
+            <button type="submit" class="w-full bg-red-500 text-white py-2 rounded-lg hover:bg-red-600 transition mt-2">Login</button>
+        </form>
+
+        <p class="text-sm text-gray-500 text-center mt-4">Don't have an account? 
+            <a href="#" class="text-red-500 hover:underline">Sign Up</a>
+        </p>
     </div>
-    <h2 class="text-xl font-bold text-gray-800 mb-2">Grocery Tracking</h2>
-    <p class="text-gray-600">Keep track of your grocery items and avoid food wastage.</p>
-  </a>
 
-  <!-- Meal Suggestion -->
-  <a href="meal-suggestion.html" class="bg-white p-6 rounded-xl shadow-lg transition-transform transform hover:scale-105 cursor-pointer hover:shadow-xl">
-    <div class="flex items-center justify-center bg-blue-500 text-white w-16 h-16 rounded-full mb-4">
-      🛒
-    </div>
-    <h2 class="text-xl font-bold text-gray-800 mb-2">Meal Suggestion</h2>
-    <p class="text-gray-600">AI-powered meal recommendations based on your available ingredients.</p>
-  </a>
+    <script>
+        document.getElementById("loginForm").addEventListener("submit", function(event) {
+            event.preventDefault(); 
 
-  <!-- Chore Management -->
-  <a href="chore-management.html" class="bg-white p-6 rounded-xl shadow-lg transition-transform transform hover:scale-105 cursor-pointer hover:shadow-xl">
-    <div class="flex items-center justify-center bg-green-500 text-white w-16 h-16 rounded-full mb-4">
-      💬
-    </div>
-    <h2 class="text-xl font-bold text-gray-800 mb-2">Chore Management</h2>
-    <p class="text-gray-600">Automate and schedule household chores for efficiency.</p>
-  </a>
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            const errorMessage = document.getElementById("error-message");
 
-</div>
+            // Dummy credentials (Replace with real authentication logic)
+            const validEmail = "user@example.com";
+            const validPassword = "password123";
 
+            if (email === validEmail && password === validPassword) {
+                window.location.href = "home.html"; // Redirect to home page
+            } else {
+                errorMessage.classList.remove("hidden"); // Show error message
+            }
+        });
+    </script>
 
-      <!-- "Why SmartNest?" Section -->
-      <div class="bg-white py-16 px-6 lg:px-20 container mx-auto">
-        <h2 class="text-3xl font-bold text-center text-gray-800 mb-8">Why Choose <span class="text-red-500">SmartNest?</span></h2>
-        
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          <!-- Feature 1 -->
-          <div class="p-6 bg-gray-100 rounded-lg shadow-lg hover:shadow-xl transition-all">
-            <div class="text-red-500 text-4xl mb-4">📊</div>
-            <h3 class="text-xl font-semibold text-gray-700">Smart Tracking</h3>
-            <p class="text-gray-600 mt-2">Automate grocery tracking and never forget an item again.</p>
-          </div>
-
-          <!-- Feature 2 -->
-          <div class="p-6 bg-gray-100 rounded-lg shadow-lg hover:shadow-xl transition-all">
-            <div class="text-blue-500 text-4xl mb-4">🤖</div>
-            <h3 class="text-xl font-semibold text-gray-700">AI-Powered Suggestions</h3>
-            <p class="text-gray-600 mt-2">Get intelligent meal recommendations based on your kitchen.</p>
-          </div>
-
-          <!-- Feature 3 -->
-          <div class="p-6 bg-gray-100 rounded-lg shadow-lg hover:shadow-xl transition-all">
-            <div class="text-green-500 text-4xl mb-4">🏠</div>
-            <h3 class="text-xl font-semibold text-gray-700">Effortless Home Management</h3>
-            <p class="text-gray-600 mt-2">Assign, automate, and track household chores easily.</p>
-          </div>
-
-          <!-- Feature 4 -->
-          <div class="p-6 bg-gray-100 rounded-lg shadow-lg hover:shadow-xl transition-all">
-            <div class="text-yellow-500 text-4xl mb-4">🔔</div>
-            <h3 class="text-xl font-semibold text-gray-700">Reminders & Alerts</h3>
-            <p class="text-gray-600 mt-2">Get timely reminders to keep your home running smoothly.</p>
-          </div>
-
-          <!-- Feature 5 -->
-          <div class="p-6 bg-gray-100 rounded-lg shadow-lg hover:shadow-xl transition-all">
-            <div class="text-purple-500 text-4xl mb-4">🌍</div>
-            <h3 class="text-xl font-semibold text-gray-700">Eco-Friendly Approach</h3>
-            <p class="text-gray-600 mt-2">Reduce waste and adopt sustainable living habits.</p>
-          </div>
-
-          <!-- Feature 6 -->
-          <div class="p-6 bg-gray-100 rounded-lg shadow-lg hover:shadow-xl transition-all">
-            <div class="text-pink-500 text-4xl mb-4">💡</div>
-            <h3 class="text-xl font-semibold text-gray-700">User-Friendly Interface</h3>
-            <p class="text-gray-600 mt-2">A seamless and intuitive experience for everyone.</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Footer -->
-      <div class="bg-gray-800 text-white text-center py-6 mt-12">
-        <p>&copy; 2025 SmartNest | All Rights Reserved.</p>
-      </div>
-    </div>
-  </body>
+</body>
 </html>

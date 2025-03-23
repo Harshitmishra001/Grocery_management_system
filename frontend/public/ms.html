@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Meal Suggestion</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <style>
+      body {
+        font-family: 'Poppins', sans-serif;
+        background: linear-gradient(to right, #ff758c, #ff7eb3);
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 100vh;
+      }
+      .meal-container {
+        background: white;
+        padding: 40px;
+        border-radius: 15px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        animation: fadeIn 1s ease-in-out;
+        width: 90%;
+        max-width: 500px;
+      }
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-20px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      input {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid #ff758c;
+        border-radius: 8px;
+        outline: none;
+        font-size: 16px;
+        transition: 0.3s;
+        margin-bottom: 10px;
+      }
+      input:focus {
+        border-color: #ff7eb3;
+        box-shadow: 0 0 8px rgba(255, 126, 179, 0.5);
+      }
+      button {
+        background: #ff758c;
+        color: white;
+        padding: 12px 20px;
+        font-size: 18px;
+        font-weight: bold;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s;
+        width: 100%;
+        margin-top: 10px;
+      }
+      button:hover {
+        background: #ff4f6e;
+        transform: scale(1.05);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <div class="w-full bg-pink-600 text-white py-4 px-6 shadow-md flex justify-between items-center">
+      <h1 class="text-2xl font-bold">SmartNest</h1>
+      <nav>
+        <a href="home.html" class="px-4 text-lg hover:text-gray-200">Home</a>
+        <a href="gt.html" class="px-4 text-lg hover:text-gray-200">Grocery</a>
+        <a href="cs.html" class="px-4 text-lg hover:text-gray-200">Chores</a>
+      </nav>
+    </div>
+    
+    <!-- Meal Suggestion Container -->
+    <div class="meal-container mt-10">
+      <h1 class="text-3xl py-5 font-bold text-gray-800">Meal Suggestions</h1>
+      <p class="text-gray-600 py-5">Enter ingredients manually or import from grocery management.</p>
+      
+      <input type="text" id="ingredient-input" class="text-2xl px-2" placeholder="Enter ingredients...">
+      <button onclick="getMealSuggestions()" class="m-5">Get Suggestions</button>
+      <button onclick="importFromGrocery()">Import from Grocery</button>
+      
+      <div id="meal-results" class="mt-4 text-gray-700 text-lg"></div>
+    </div>
+
+    <script>
+      window.onload = function() {
+  const mealContainer = document.querySelector(".meal-container");
+  
+  // Remove any hidden class or display:none if present
+  mealContainer.classList.remove("hidden");
+  mealContainer.style.display = "block";
+  mealContainer.style.opacity = "1";
+
+  gsap.from(".meal-container", {
+    opacity: 0,
+    y: -50,
+    duration: 1,
+    ease: "power2.out",
+  });
+
+  // Ensure it remains visible after animation
+  gsap.to(".meal-container", { opacity: 1, duration: 0 });
+
+  // Debugging visibility issue
+  setInterval(() => {
+    console.log("Meal container visibility:", getComputedStyle(mealContainer).display);
+  }, 1000);
+};
+
+    </script>
+  </body>
+</html>

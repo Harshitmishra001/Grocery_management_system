@@ -5,9 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SmartNest</title>
     <script src="https://cdn.tailwindcss.com"></script>
-
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <style>
-      /* Ensuring no horizontal scroll */
       body {
         overflow-x: hidden;
       }
@@ -20,54 +19,36 @@
         <div class="bg-gradient-to-r from-pink-500 to-red-500 text-white font-bold text-3xl px-6 py-3 rounded-xl shadow-lg tracking-wider transition-transform duration-300 hover:scale-105">
           SmartNest
         </div>
-        <div>
-          <button onclick="window.location.href='login.html'" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Login</button>
-<button class="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg ml-2 hover:bg-gray-300">Sign Up</button>
-        </div>
       </div>
-
+      
       <!-- Hero Section -->
-      <div class="text-center mt-10 container mx-auto">
+      <div class="text-center mt-10 container mx-auto opacity-0" id="hero">
         <h1 class="text-4xl font-bold text-white">Hey! What would you like to do today?</h1>
         <p class="text-gray-200 mt-2 text-lg">Manage groceries, get meal suggestions, and organize chores efficiently.</p>
       </div>
 
       <!-- Main Features Section -->
-      <!-- Main Features Section -->
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 p-10 container mx-auto">
-  
-  <!-- Grocery Tracking -->
-  <a href="gt.html" class="bg-white p-6 rounded-xl shadow-lg transition-transform transform hover:scale-105 cursor-pointer hover:shadow-xl">
-    <div class="flex items-center justify-center bg-red-500 text-white w-16 h-16 rounded-full mb-4">
-      🔍
-    </div>
-    <h2 class="text-xl font-bold text-gray-800 mb-2">Grocery Tracking</h2>
-    <p class="text-gray-600">Keep track of your grocery items and avoid food wastage.</p>
-  </a>
-
-  <!-- Meal Suggestion -->
-  <a href="meal-suggestion.html" class="bg-white p-6 rounded-xl shadow-lg transition-transform transform hover:scale-105 cursor-pointer hover:shadow-xl">
-    <div class="flex items-center justify-center bg-blue-500 text-white w-16 h-16 rounded-full mb-4">
-      🛒
-    </div>
-    <h2 class="text-xl font-bold text-gray-800 mb-2">Meal Suggestion</h2>
-    <p class="text-gray-600">AI-powered meal recommendations based on your available ingredients.</p>
-  </a>
-
-  <!-- Chore Management -->
-  <a href="chore-management.html" class="bg-white p-6 rounded-xl shadow-lg transition-transform transform hover:scale-105 cursor-pointer hover:shadow-xl">
-    <div class="flex items-center justify-center bg-green-500 text-white w-16 h-16 rounded-full mb-4">
-      💬
-    </div>
-    <h2 class="text-xl font-bold text-gray-800 mb-2">Chore Management</h2>
-    <p class="text-gray-600">Automate and schedule household chores for efficiency.</p>
-  </a>
-
-</div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 p-10 container mx-auto">
+        <a href="gt.html" class="feature-card bg-white p-6 rounded-xl shadow-lg transition-transform hover:scale-105 cursor-pointer hover:shadow-xl opacity-0">
+          <div class="flex items-center justify-center bg-red-500 text-white w-16 h-16 rounded-full mb-4">🔍</div>
+          <h2 class="text-xl font-bold text-gray-800 mb-2">Grocery Tracking</h2>
+          <p class="text-gray-600">Keep track of your grocery items and avoid food wastage.</p>
+        </a>
+        <a href="ms.html" class="feature-card bg-white p-6 rounded-xl shadow-lg transition-transform hover:scale-105 cursor-pointer hover:shadow-xl opacity-0">
+          <div class="flex items-center justify-center bg-blue-500 text-white w-16 h-16 rounded-full mb-4">🛒</div>
+          <h2 class="text-xl font-bold text-gray-800 mb-2">Meal Suggestion</h2>
+          <p class="text-gray-600">AI-powered meal recommendations based on your available ingredients.</p>
+        </a>
+        <a href="cs.html" class="feature-card bg-white p-6 rounded-xl shadow-lg transition-transform hover:scale-105 cursor-pointer hover:shadow-xl opacity-0">
+          <div class="flex items-center justify-center bg-green-500 text-white w-16 h-16 rounded-full mb-4">💬</div>
+          <h2 class="text-xl font-bold text-gray-800 mb-2">Chore Management</h2>
+          <p class="text-gray-600">Automate and schedule household chores for efficiency.</p>
+        </a>
+      </div>
 
 
       <!-- "Why SmartNest?" Section -->
-      <div class="bg-white py-16 px-6 lg:px-20 container mx-auto">
+      <div class="bg-white py-16 px-6 lg:px-20">
         <h2 class="text-3xl font-bold text-center text-gray-800 mb-8">Why Choose <span class="text-red-500">SmartNest?</span></h2>
         
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -120,5 +101,17 @@
         <p>&copy; 2025 SmartNest | All Rights Reserved.</p>
       </div>
     </div>
+    </div>
+
+    <script>
+      window.onload = function() {
+        // Animate hero section fade-in
+        gsap.to("#hero", {opacity: 1, duration: 1, ease: "power2.out"});
+    
+        // Animate feature cards fade-in with stagger effect
+        gsap.to(".feature-card", {opacity: 1, duration: 1, y: -20, stagger: 0.3, ease: "power2.out"});
+      };
+    </script>
+    
   </body>
 </html>

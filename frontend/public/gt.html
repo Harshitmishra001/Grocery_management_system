@@ -8,32 +8,9 @@
 </head>
 <body class="bg-red-400 p-6">
     <div class="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow-md text-center">
-        <h1 class="text-2xl font-bold text-gray-800">Hey! What would you like to do today?</h1>
+        
         <p class="text-gray-600 mb-6">Manage groceries, get meal suggestions, and organize chores efficiently.</p>
         
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="bg-white p-4 rounded-lg shadow flex flex-col items-center">
-                <div class="bg-red-500 p-3 rounded-full">
-                    <span class="text-white text-xl">🍎</span>
-                </div>
-                <h3 class="font-semibold text-lg mt-3">Grocery Tracking</h3>
-                <p class="text-gray-500 text-sm">Keep track of your grocery items and avoid food wastage.</p>
-            </div>
-            <div class="bg-white p-4 rounded-lg shadow flex flex-col items-center">
-                <div class="bg-blue-500 p-3 rounded-full">
-                    <span class="text-white text-xl">🛒</span>
-                </div>
-                <h3 class="font-semibold text-lg mt-3">Meal Suggestion</h3>
-                <p class="text-gray-500 text-sm">AI-powered meal recommendations based on your available ingredients.</p>
-            </div>
-            <div class="bg-white p-4 rounded-lg shadow flex flex-col items-center">
-                <div class="bg-green-500 p-3 rounded-full">
-                    <span class="text-white text-xl">📝</span>
-                </div>
-                <h3 class="font-semibold text-lg mt-3">Chore Management</h3>
-                <p class="text-gray-500 text-sm">Automate and schedule household chores for efficiency.</p>
-            </div>
-        </div>
         
         <h2 class="text-xl font-bold mt-6 text-gray-800">Grocery List</h2>
         <div class="mt-4">
@@ -98,7 +75,7 @@
     let list = document.getElementById('grocery-list');
     let listItem = document.createElement('li');
     listItem.className = "bg-gray-200 p-2 rounded-lg flex justify-between";
-    listItem.innerHTML = `<span>${itemName} - ${quantity} - $${price}</span> 
+    listItem.innerHTML = `<span>${itemName} - ${quantity} - Rs${price}</span> 
                           <button onclick="this.parentNode.remove()" class="text-red-500">Remove</button>`;
     list.appendChild(listItem);
 }
