@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { loginUser, registerUser } from '../api';
+import './Login.css';
 
 function Login({ onLogin }) {
   const [isLogin, setIsLogin] = useState(true);
@@ -9,6 +10,7 @@ function Login({ onLogin }) {
     name: ''
   });
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const validateForm = () => {
     if (!isLogin && !formData.name.trim()) {
@@ -38,6 +40,7 @@ function Login({ onLogin }) {
       return;
     }
 
+    setIsLoading(true);
     try {
       let data;
       if (isLogin) {
@@ -53,6 +56,8 @@ function Login({ onLogin }) {
       }
     } catch (err) {
       setError(err.message || (isLogin ? 'Login failed. Please try again.' : 'Registration failed. Please try again.'));
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -63,6 +68,7 @@ function Login({ onLogin }) {
       [name]: value
     }));
     setError('');
+<<<<<<< HEAD
   };
 
   return (
@@ -129,6 +135,87 @@ function Login({ onLogin }) {
             {isLogin ? 'Register here' : 'Login here'}
           </button>
         </p>
+=======
+  };
+
+  const toggleMode = () => {
+    setIsLogin(!isLogin);
+    setError('');
+    setFormData({ email: '', password: '', name: '' });
+  };
+
+  return (
+    <div className="auth-container">
+      <h2>{isLogin ? 'Welcome Back' : 'Create Account'}</h2>
+      
+      {error && <div className="error-message">{error}</div>}
+      
+      <form onSubmit={handleSubmit}>
+        {!isLogin && (
+          <div className="form-group">
+            <label htmlFor="name">Full Name</label>
+            <input
+              id="name"
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              required={!isLogin}
+              placeholder="Enter your full name"
+              disabled={isLoading}
+            />
+          </div>
+        )}
+        
+        <div className="form-group">
+          <label htmlFor="email">Email Address</label>
+          <input
+            id="email"
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+            placeholder="Enter your email"
+            disabled={isLoading}
+          />
+        </div>
+        
+        <div className="form-group">
+          <label htmlFor="password">Password</label>
+          <input
+            id="password"
+            type="password"
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+            required
+            placeholder="Enter your password (min 6 characters)"
+            disabled={isLoading}
+          />
+        </div>
+        
+        <button 
+          type="submit" 
+          className="submit-button"
+          disabled={isLoading}
+        >
+          {isLoading 
+            ? 'Please wait...' 
+            : (isLogin ? 'Sign In' : 'Create Account')}
+        </button>
+      </form>
+      
+      <div className="toggle-auth">
+        {isLogin ? "Don't have an account? " : "Already have an account? "}
+        <button 
+          onClick={toggleMode}
+          className="toggle-button"
+          disabled={isLoading}
+        >
+          {isLogin ? 'Sign up here' : 'Sign in here'}
+        </button>
+>>>>>>> f1168479b90d2ca03c14661640f54ee68594779b
       </div>
     </div>
   );
