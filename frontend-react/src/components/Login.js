@@ -1,6 +1,7 @@
 // src/components/Login.js
 import React, { useState } from 'react';
 import { loginUser, registerUser } from '../api';
+import './Login.css';
 
 function Login({ onLogin }) {
   const [isLogin, setIsLogin] = useState(true);
@@ -10,6 +11,7 @@ function Login({ onLogin }) {
     name: ''
   });
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const validateForm = () => {
     if (!isLogin && !formData.name.trim()) {
@@ -39,6 +41,7 @@ function Login({ onLogin }) {
       return;
     }
 
+    setIsLoading(true);
     try {
       let data;
       if (isLogin) {
@@ -54,6 +57,8 @@ function Login({ onLogin }) {
       }
     } catch (err) {
       setError(err.message || (isLogin ? 'Login failed. Please try again.' : 'Registration failed. Please try again.'));
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -63,64 +68,87 @@ function Login({ onLogin }) {
       ...prev,
       [name]: value
     }));
-    setError(''); // Clear error when user types
+    setError('');
+  };
+
+  const toggleMode = () => {
+    setIsLogin(!isLogin);
+    setError('');
+    setFormData({ email: '', password: '', name: '' });
   };
 
   return (
     <div className="auth-container">
-      <h2>{isLogin ? 'Login' : 'Register'}</h2>
-      {error && <p className="error" style={{ color: 'red', marginBottom: '1rem' }}>{error}</p>}
+      <h2>{isLogin ? 'Welcome Back' : 'Create Account'}</h2>
+      
+      {error && <div className="error-message">{error}</div>}
+      
       <form onSubmit={handleSubmit}>
         {!isLogin && (
-          <div>
-            <label>Name: </label>
+          <div className="form-group">
+            <label htmlFor="name">Full Name</label>
             <input
+              id="name"
               type="text"
               name="name"
               value={formData.name}
               onChange={handleChange}
               required={!isLogin}
               placeholder="Enter your full name"
+              disabled={isLoading}
             />
           </div>
         )}
-        <div>
-          <label>Email: </label>
+        
+        <div className="form-group">
+          <label htmlFor="email">Email Address</label>
           <input
+            id="email"
             type="email"
             name="email"
             value={formData.email}
             onChange={handleChange}
             required
             placeholder="Enter your email"
+            disabled={isLoading}
           />
         </div>
-        <div>
-          <label>Password: </label>
+        
+        <div className="form-group">
+          <label htmlFor="password">Password</label>
           <input
+            id="password"
             type="password"
             name="password"
             value={formData.password}
             onChange={handleChange}
             required
             placeholder="Enter your password (min 6 characters)"
+            disabled={isLoading}
           />
         </div>
-        <button type="submit">{isLogin ? 'Login' : 'Register'}</button>
+        
+        <button 
+          type="submit" 
+          className="submit-button"
+          disabled={isLoading}
+        >
+          {isLoading 
+            ? 'Please wait...' 
+            : (isLogin ? 'Sign In' : 'Create Account')}
+        </button>
       </form>
-      <p>
+      
+      <div className="toggle-auth">
         {isLogin ? "Don't have an account? " : "Already have an account? "}
         <button 
-          onClick={() => {
-            setIsLogin(!isLogin);
-            setError('');
-            setFormData({ email: '', password: '', name: '' });
-          }}
-          style={{ background: 'none', border: 'none', color: '#007bff', cursor: 'pointer', padding: 0 }}
+          onClick={toggleMode}
+          className="toggle-button"
+          disabled={isLoading}
         >
-          {isLogin ? 'Register here' : 'Login here'}
+          {isLogin ? 'Sign up here' : 'Sign in here'}
         </button>
-      </p>
+      </div>
     </div>
   );
 }
