@@ -3,78 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Grocery Tracking - SmartNest</title>
+    <title>Grocery List</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 text-gray-800">
-
-    <!-- Navigation -->
-    <nav class="bg-red-500 text-white p-4 text-center font-bold text-2xl">
-        SmartNest - Grocery Tracking
-    </nav>
-
-    <!-- Upload Section -->
-    <div class="container mx-auto mt-10 p-6 bg-white rounded-lg shadow-lg max-w-3xl text-center">
-        <h1 class="text-3xl font-bold text-red-500">Upload Your Bill</h1>
-        <p class="mt-4 text-gray-600">Upload an image of your bill, and we'll extract the grocery items for you.</p>
-
-        <!-- File Input -->
-        <input type="file" id="billImage" accept="image/*" class="mt-4 p-2 border rounded-lg">
+<body class="bg-red-400 p-6">
+    <div class="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow-md text-center">
+        <h1 class="text-2xl font-bold text-gray-800">Hey! What would you like to do today?</h1>
+        <p class="text-gray-600 mb-6">Manage groceries, get meal suggestions, and organize chores efficiently.</p>
         
-        <!-- Upload Button -->
-        <button onclick="uploadImage()" class="mt-4 px-6 py-2 bg-red-500 text-white rounded-lg shadow-md hover:bg-red-600 transition">
-            Upload & Scan
-        </button>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-white p-4 rounded-lg shadow flex flex-col items-center">
+                <div class="bg-red-500 p-3 rounded-full">
+                    <span class="text-white text-xl">🍎</span>
+                </div>
+                <h3 class="font-semibold text-lg mt-3">Grocery Tracking</h3>
+                <p class="text-gray-500 text-sm">Keep track of your grocery items and avoid food wastage.</p>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow flex flex-col items-center">
+                <div class="bg-blue-500 p-3 rounded-full">
+                    <span class="text-white text-xl">🛒</span>
+                </div>
+                <h3 class="font-semibold text-lg mt-3">Meal Suggestion</h3>
+                <p class="text-gray-500 text-sm">AI-powered meal recommendations based on your available ingredients.</p>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow flex flex-col items-center">
+                <div class="bg-green-500 p-3 rounded-full">
+                    <span class="text-white text-xl">📝</span>
+                </div>
+                <h3 class="font-semibold text-lg mt-3">Chore Management</h3>
+                <p class="text-gray-500 text-sm">Automate and schedule household chores for efficiency.</p>
+            </div>
+        </div>
+        
+        <h2 class="text-xl font-bold mt-6 text-gray-800">Grocery List</h2>
+        <div class="mt-4">
+            <input id="item-name" type="text" placeholder="Enter item name" class="w-full p-2 border rounded-lg">
+        </div>
+        <div class="flex items-center gap-4 mt-4 justify-center">
+            <button onclick="decreaseQuantity()" class="px-3 py-1 bg-red-500 text-white rounded-lg">-</button>
+            <input id="quantity" type="number" value="1" min="1" class="w-16 text-center border rounded-lg">
+            <button onclick="increaseQuantity()" class="px-3 py-1 bg-green-500 text-white rounded-lg">+</button>
+        </div>
+        <div class="mt-4">
+            <input id="price" type="number" placeholder="Enter price" class="w-full p-2 border rounded-lg">
+        </div>
+        <button onclick="addItem()" class="w-full bg-blue-500 text-white py-2 mt-4 rounded-lg">Add Item</button>
+        <button onclick="downloadCSV()" class="w-full bg-green-500 text-white py-2 mt-2 rounded-lg">Download CSV</button>
+        
+        <ul id="grocery-list" class="mt-4 space-y-2"></ul>
 
-        <!-- Display Extracted Grocery List -->
-        <h2 class="mt-6 text-xl font-bold text-gray-700">Detected Groceries:</h2>
-        <ul id="groceryList" class="mt-4 text-gray-600"></ul>
-        <p id="errorMessage" class="text-red-500 mt-2 hidden"></p>
-
-        <!-- Back Button -->
-        <a href="index.html" class="inline-block mt-6 px-6 py-3 bg-gray-500 text-white rounded-lg shadow-md hover:bg-gray-600 transition">
-            ← Back to Home
-        </a>
+        <h2 class="text-xl font-bold mt-6 text-gray-800">Upload Bill</h2>
+        <input type="file" id="bill-upload" class="mt-2 border p-2 rounded-lg w-full">
     </div>
 
     <script>
-        function uploadImage() {
-    const fileInput = document.getElementById("billImage");
-    const file = fileInput.files[0];
+        let groceryData = [];
 
-    if (!file) {
-        alert("Please upload an image!");
+        function increaseQuantity() {
+            let quantity = document.getElementById('quantity');
+            quantity.value = parseInt(quantity.value) + 1;
+        }
+        
+        function decreaseQuantity() {
+            let quantity = document.getElementById('quantity');
+            if (quantity.value > 1) {
+                quantity.value = parseInt(quantity.value) - 1;
+            }
+        }
+        
+        function addItem() {
+    let itemName = document.getElementById('item-name').value;
+    let quantity = document.getElementById('quantity').value;
+    let price = document.getElementById('price').value;
+
+    if (itemName.trim() === '' || price.trim() === '') {
+        alert('Please enter an item name and price');
         return;
     }
 
-    const formData = new FormData();
-    formData.append("image", file); // Ensure "image" matches Flask
+    let itemData = { item: itemName, quantity: quantity, price: price };
 
-    fetch("http://127.0.0.1:5000/upload", {
-        method: "POST",
-        body: formData
+    fetch('http://localhost:3000/add-item', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(itemData)
     })
-    .then(response => response.json())
+    .then(response => response.text())
     .then(data => {
-        if (data.error) {
-            alert(`Error: ${data.error}`);
-            return;
-        }
-
-        const groceryList = document.getElementById("groceryList");
-        groceryList.innerHTML = "";
-        data.items.forEach(item => {
-            const li = document.createElement("li");
-            li.textContent = `${item.name} - ${item.quantity}`;
-            groceryList.appendChild(li);
-        });
+        console.log(data);
+        alert('Item added successfully!');
     })
-    .catch(error => {
-        console.error("Error:", error);
-        alert("An error occurred while processing your request.");
-    });
-}
-</script>
+    .catch(error => console.error('Error:', error));
 
+    let list = document.getElementById('grocery-list');
+    let listItem = document.createElement('li');
+    listItem.className = "bg-gray-200 p-2 rounded-lg flex justify-between";
+    listItem.innerHTML = `<span>${itemName} - ${quantity} - $${price}</span> 
+                          <button onclick="this.parentNode.remove()" class="text-red-500">Remove</button>`;
+    list.appendChild(listItem);
+}
+
+
+
+
+        function downloadCSV() {
+            let csvContent = "Item,Quantity,Price\n" + groceryData.map(row => `${row.item},${row.quantity},${row.price}`).join("\n");
+            let blob = new Blob([csvContent], { type: 'text/csv' });
+            let link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = "grocery_list.csv";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
 </body>
 </html>

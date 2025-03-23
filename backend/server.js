@@ -141,3 +141,98 @@ process.on('SIGTERM', gracefulShutdown);
 process.on('SIGINT', gracefulShutdown);
 
 module.exports = app;
+
+
+// gt.html
+
+const fs = require('fs');
+const csv = require('csv-parser');
+
+
+const PORT = 3000;
+const CSV_FILE = path.join(__dirname, 'grocery_list.csv');
+
+app.use(express.json());
+app.use(cors());
+
+// Ensure CSV file has headers
+if (!fs.existsSync(CSV_FILE)) {
+    fs.writeFileSync(CSV_FILE, 'Item,Quantity,Price\n', 'utf8');
+}
+
+// Function to read CSV data
+const readCSV = () => {
+    return new Promise((resolve, reject) => {
+        let results = [];
+        fs.createReadStream(CSV_FILE)
+            .pipe(csv())
+            .on('data', (data) => results.push(data))
+            .on('end', () => resolve(results))
+            .on('error', (err) => reject(err));
+    });
+};
+
+// Route to get all items
+app.get('/items', async (req, res) => {
+    try {
+        let items = await readCSV();
+        res.json(items);
+    } catch (err) {
+        res.status(500).send('Error reading CSV file');
+    }
+});
+
+// Route to add or update an item
+app.post('/add-item', async (req, res) => {
+    const { item, quantity, price } = req.body;
+    if (!item || !quantity || !price) {
+        return res.status(400).send('Missing fields');
+    }
+
+    let items = await readCSV();
+    let found = false;
+
+    // Update quantity if item exists
+    items = items.map((entry) => {
+        if (entry.Item.toLowerCase() === item.toLowerCase()) {
+            entry.Quantity = parseInt(entry.Quantity) + parseInt(quantity);
+            entry.Price = price; // Update price
+            found = true;
+        }
+        return entry;
+    });
+
+    // Add new item if not found
+    if (!found) {
+        items.push({ Item: item, Quantity: quantity, Price: price });
+    }
+
+    // Write back to CSV
+    const csvContent = 'Item,Quantity,Price\n' + items.map(row => `${row.Item},${row.Quantity},${row.Price}`).join('\n');
+    fs.writeFileSync(CSV_FILE, csvContent, 'utf8');
+
+    res.send('Item added/updated successfully');
+});
+
+// Route to delete an item
+app.delete('/delete-item', async (req, res) => {
+    const { item } = req.body;
+    if (!item) {
+        return res.status(400).send('Item name required');
+    }
+
+    let items = await readCSV();
+    items = items.filter(entry => entry.Item.toLowerCase() !== item.toLowerCase());
+
+    const csvContent = 'Item,Quantity,Price\n' + items.map(row => `${row.Item},${row.Quantity},${row.Price}`).join('\n');
+    fs.writeFileSync(CSV_FILE, csvContent, 'utf8');
+
+    res.send('Item removed successfully');
+});
+
+// Start the server
+app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+});
+
+// gt.html ends
