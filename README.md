@@ -36,7 +36,8 @@ The Grocery Management System is a comprehensive solution designed to streamline
   - Low stock alerts
   - Product categorization
   - Price management
-  - Bulk import/export
+  - Bulk import/export via CSV
+  - Bulk import validation and error handling
 
 - **Order Processing**
   - Order creation and tracking
@@ -163,6 +164,25 @@ grocery-management-system/
 - `PUT /api/inventory/:id` - Update inventory item
 - `DELETE /api/inventory/:id` - Delete inventory item
 - `GET /api/inventory/low-stock` - Get low stock items
+- `POST /api/inventory/bulk-import` - Bulk import inventory items from CSV
+
+### CSV Import Format
+The bulk import feature accepts CSV files with the following columns:
+- `name` (required) - Product name
+- `price` (required) - Product price
+- `quantity` (required) - Initial quantity
+- `description` (optional) - Product description
+- `category` (optional) - Product category
+- `unit` (optional) - Unit of measurement
+- `minStockLevel` (optional) - Minimum stock level
+
+Example CSV format:
+```csv
+name,price,quantity,description,category,unit,minStockLevel
+Apples,2.99,100,Fresh red apples,Produce,kg,20
+Milk,3.99,50,Whole milk,Dairy,liters,10
+Bread,1.99,75,Fresh baked bread,Bakery,loaves,15
+```
 
 ### Order Endpoints
 - `GET /api/orders` - Get all orders
