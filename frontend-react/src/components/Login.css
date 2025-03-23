@@ -1,0 +1,131 @@
+.auth-container {
+  max-width: 400px;
+  margin: 50px auto;
+  padding: 30px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.auth-container h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 30px;
+  font-size: 24px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: #555;
+  font-weight: 500;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 16px;
+  transition: border-color 0.3s;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+}
+
+.error-message {
+  color: #e74c3c;
+  background-color: #fdeaea;
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.submit-button {
+  width: 100%;
+  padding: 12px;
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.submit-button:hover {
+  background-color: #357abd;
+}
+
+.submit-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.toggle-auth {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.toggle-button {
+  background: none;
+  border: none;
+  color: #4a90e2;
+  cursor: pointer;
+  font-size: 14px;
+  text-decoration: underline;
+  padding: 0;
+  margin-left: 5px;
+}
+
+.toggle-button:hover {
+  color: #357abd;
+}
+
+/* Animation for form transition */
+.auth-container form {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive design */
+@media (max-width: 480px) {
+  .auth-container {
+    margin: 20px;
+    padding: 20px;
+  }
+  
+  .auth-container h2 {
+    font-size: 20px;
+  }
+  
+  .form-group input {
+    padding: 10px;
+    font-size: 14px;
+  }
+  
+  .submit-button {
+    padding: 10px;
+    font-size: 14px;
+  }
+} 

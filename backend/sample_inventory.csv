@@ -1,0 +1,6 @@
+name,price,quantity,description,category,unit,minStockLevel
+Tomatoes,2.99,100,Fresh red tomatoes,Produce,kg,10
+Milk,3.49,50,Fresh whole milk,Dairy,liters,15
+Bread,1.99,30,Whole wheat bread,Bakery,loaves,5
+Rice,12.99,200,Basmati rice,Grains,kg,20
+Chicken,8.99,40,Fresh chicken breast,Meat,kg,8 

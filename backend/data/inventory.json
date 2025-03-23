@@ -1,0 +1,13 @@
+[
+  {
+    "_id": "1742702721842",
+    "name": "onion",
+    "description": "fresh onion",
+    "price": "123",
+    "quantity": "23",
+    "unit": "kg",
+    "category": "vegetable",
+    "threshold": "5",
+    "createdAt": "2025-03-23T04:05:21.842Z"
+  }
+]

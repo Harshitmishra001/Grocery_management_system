@@ -3,6 +3,9 @@ const express = require('express');
 const router = express.Router();
 const Inventory = require('../models/Inventory');
 const { isAdmin } = require('../middleware/auth');
+const multer = require('multer');
+const csv = require('csv-parser');
+const fs = require('fs');
 
 // GET: Retrieve all inventory items
 router.get('/', async (req, res, next) => {
@@ -183,6 +186,58 @@ router.delete('/:id', isAdmin, async (req, res, next) => {
     });
   } catch (error) {
     next(error);
+  }
+});
+
+// Basic multer setup for CSV upload
+const upload = multer({ dest: 'uploads/' });
+
+// Simplified bulk import route
+router.post('/bulk-import', upload.single('file'), async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ error: 'No file uploaded' });
+    }
+
+    const results = [];
+    fs.createReadStream(req.file.path)
+      .pipe(csv())
+      .on('data', (data) => {
+        // Only process if required fields are present
+        if (data.name && data.price && data.quantity) {
+          results.push({
+            name: data.name,
+            price: parseFloat(data.price),
+            quantity: parseInt(data.quantity),
+            description: data.description || '',
+            category: data.category || 'Uncategorized',
+            unit: data.unit || 'units',
+            minStockLevel: parseInt(data.minStockLevel) || 0
+          });
+        }
+      })
+      .on('end', async () => {
+        try {
+          // Insert valid items into database
+          const insertedItems = await Inventory.insertMany(results);
+          
+          // Clean up uploaded file
+          fs.unlinkSync(req.file.path);
+          
+          res.status(201).json({
+            message: `Successfully imported ${insertedItems.length} items`,
+            items: insertedItems
+          });
+        } catch (error) {
+          fs.unlinkSync(req.file.path);
+          res.status(500).json({ error: error.message });
+        }
+      });
+  } catch (error) {
+    if (req.file) {
+      fs.unlinkSync(req.file.path);
+    }
+    res.status(500).json({ error: error.message });
   }
 });
 
